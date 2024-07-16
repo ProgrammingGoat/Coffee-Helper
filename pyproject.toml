@@ -13,6 +13,7 @@ formal_name = "Coffee Helper"
 description = "A tool to help you prepare delicious coffee."
 long_description = """More details about the app should go here.
 """
+icon = "icons/coffee"
 sources = [
     "src/coffeehelper",
 ]
