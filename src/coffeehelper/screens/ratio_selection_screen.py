@@ -3,7 +3,7 @@ from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 from toga.validators import Number
 
-from .recipe import recipe
+from ..recipe import recipe
 
 class RatioSelectionScreen(toga.Box):
     def __init__(self):

@@ -2,8 +2,8 @@ import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
-from .coffee_selection_screen import CoffeeSelectionScreen
-from .ratio_selection_screen import RatioSelectionScreen
+from .screens.coffee_selection_screen import CoffeeSelectionScreen
+from .screens.ratio_selection_screen import RatioSelectionScreen
 from .recipe import recipe
 from .util.json_reader import JsonReader
 
