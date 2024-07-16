@@ -2,10 +2,12 @@ import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
-from .screens import CoffeePreparationScreen, CoffeeSelectionScreen, RatioSelectionScreen
+from .screens import CoffeePreparationScreen, CoffeeSelectionScreen, \
+                    RatioSelectionScreen, InstructionDisplayScreen
 from .recipe import recipe
 
-from .util.constants import COFFEE_SELECTION, RATIO_SELECTION, COFFEE_PREPARATION, INSTRUCTIONS
+from .util.constants import COFFEE_SELECTION, RATIO_SELECTION,\
+                            COFFEE_PREPARATION, INSTRUCTIONS, FINISHED
 from .util.json_reader import JsonReader
 
 class MainContainer(toga.Box):
@@ -72,17 +74,37 @@ class MainContainer(toga.Box):
         coffee_preparation_screen = CoffeePreparationScreen()
         self.main_box.add(coffee_preparation_screen)
 
+    def load_instruction_display_screen(self):
+        self.current_step = INSTRUCTIONS
+        self.main_box.clear()
+        self.instruction_display_screen = InstructionDisplayScreen()
+        self.main_box.add(self.instruction_display_screen)
+
+    def load_finish_screen(self):
+        pass
+
     # Event Handlers
 
     def forward_handler(self, widget=None):
         if self.current_step == RATIO_SELECTION:
             self.load_coffee_preparation_screen()
+        elif self.current_step == COFFEE_PREPARATION:
+            self.load_instruction_display_screen()
+        elif self.current_step == INSTRUCTIONS:
+            result = self.instruction_display_screen.next_step()
+            if result == "finished":
+                self.current_step == FINISHED
+                self.load_finish_screen()
+        else:
+            print("Forward pressed.")
 
     def backward_handler(self, widget=None):
         if self.current_step == RATIO_SELECTION:
             self.load_selection_screen()
         elif self.current_step == COFFEE_PREPARATION:
             self.load_ratio_screen()
+        elif self.current_step == INSTRUCTIONS and recipe.current_step <= 0:
+            self.load_coffee_preparation_screen()
         else:
             print("Backward pressed.")
 

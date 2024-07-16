@@ -26,7 +26,8 @@ class Recipe():
     def get_current_step(self):
         if self.current_step <= len(self.steps):
             return self.steps[self.current_step]
-
+        else:
+            return None
 
 
 # singleton instance

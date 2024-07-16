@@ -106,10 +106,40 @@ class CoffeePreparationScreen(toga.Box):
         self.add(label)
 
 
-class StepDisplayScreen(toga.Box):
+class InstructionDisplayScreen(toga.Box):
     def __init__(self):
-        super().__init__()
+        super().__init__(style=Pack(direction=COLUMN))
+        self.step: dict = recipe.get_current_step()
         self.setup()
 
     def setup(self):
-        pass
+        self.image_box = toga.Box(style=Pack(flex=1))
+        self.text_box = toga.Box()
+        self.timer_box = toga.Box()
+        self.add(self.image_box, self.text_box, self.timer_box)
+        self.load_step()
+
+    def load_step(self):
+        self.image_box.clear()
+        self.text_box.clear()
+        self.timer_box.clear()
+
+        image = self.step.get("image")
+        text = self.step.get("text")
+        timer = self.step.get("timer")
+
+        if image:
+            pass # insert image
+        if text:
+            label = toga.Label(text)
+            self.text_box.add(label)
+        if timer:
+            pass # insert and start timer
+
+    def next_step(self):
+        recipe.next_step()
+        self.step = recipe.get_current_step()
+        if self.step:
+            self.load_step()
+        else:
+            return "finished"
