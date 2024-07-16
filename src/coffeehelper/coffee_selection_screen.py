@@ -10,7 +10,6 @@ class CoffeeSelectionScreen(toga.Box):
 
     def setup(self):
         label = toga.Label("Which method would you like to use?")
-        tems = self.get_items()
         self.selection = toga.Selection(items=self.instructions, accessor="name")
         self.add(label, self.selection)
 

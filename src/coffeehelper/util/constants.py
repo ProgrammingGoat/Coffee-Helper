@@ -1,0 +1,4 @@
+# default values
+
+DEFAULT_WATER = 500
+DEFAULT_COFFEE = 30

@@ -26,7 +26,10 @@ class MainContainer(toga.Box):
 
     def load_start_button(self):
         self.controls.clear()
-        start_button = toga.Button("Start brewing!", style=Pack(flex=1))
+        start_button = toga.Button(
+            "Start brewing!", 
+            style=Pack(flex=1), 
+            on_press=self.start_button_handler)
         self.controls.add(start_button)
 
     def load_control_arrows(self):
@@ -47,6 +50,19 @@ class MainContainer(toga.Box):
         print("Backward pressed.")
 
     def start_button_handler(self, widget=None):
+        """Handles the start button click, parses the ratio and passes it on to the ratio selection screen.
+
+        Args:
+            widget (toga.Widget, optional): The button that sent the event. Defaults to None.
+        """
         selected = self.coffee_selection_screen.selection.value
+        ratio = selected.ratioasdfasdfs
+        coffee = None
+        water = None
+        if ratio:
+            coffee = ratio["coffee"]
+            water = ratio["water"]
+        ratio_selection_screen = RatioSelectionScreen(coffee, water)
+        
         self.main_box.clear()
-        ratio_selection_screen = RatioSelectionScreen()
+        self.main_box.add(ratio_selection_screen)

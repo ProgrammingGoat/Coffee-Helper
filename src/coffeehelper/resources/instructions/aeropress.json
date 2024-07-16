@@ -1,7 +1,10 @@
 {
     "name": "Aeropress",
     "grind": "medium to fine",
-    "ratio": [200, 11],
+    "ratio": {
+        "water": 200,
+        "coffee": 11
+    },
     "steps": [
         {
             "text": "Put the paper filter into your Aeropress and close it.",

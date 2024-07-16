@@ -1,7 +1,10 @@
 {
     "name": "French Press",
     "grind": "medium to coarse",
-    "ratio": [30, 500],
+    "ratio": {
+        "water": 500,
+        "coffee": 30
+    },
     "steps": [
         {
             "text": "Add {coffee} grams of coffee to your French Press.",
@@ -27,7 +30,7 @@
         },
         {
             "text": "Gently push the plunger all the way down and serve immediately.",
-            "image": "fp_plunge"
+            "image": "fp_plunge.jpg"
         }
     ]
 }
