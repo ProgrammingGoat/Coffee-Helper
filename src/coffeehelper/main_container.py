@@ -2,9 +2,10 @@ import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
-from .screens.coffee_selection_screen import CoffeeSelectionScreen
-from .screens.ratio_selection_screen import RatioSelectionScreen
+from .screens import CoffeePreparationScreen, CoffeeSelectionScreen, RatioSelectionScreen
 from .recipe import recipe
+
+from .util.constants import COFFEE_SELECTION, RATIO_SELECTION, COFFEE_PREPARATION, INSTRUCTIONS
 from .util.json_reader import JsonReader
 
 class MainContainer(toga.Box):
@@ -25,15 +26,9 @@ class MainContainer(toga.Box):
         self.controls = toga.Box(style=Pack(direction=ROW, height=40, flex=1))
 
         self.add(self.main_box, self.controls)
-        self.load_start_button()
+        self.load_selection_screen()
 
-    def load_start_button(self):
-        self.controls.clear()
-        start_button = toga.Button(
-            "Start brewing!", 
-            style=Pack(flex=1), 
-            on_press=self.start_button_handler)
-        self.controls.add(start_button)
+    # Element Loading Methods
 
     def load_control_arrows(self):
         self.controls.clear()
@@ -43,32 +38,19 @@ class MainContainer(toga.Box):
         self.controls.add(backward_button, spacer, forward_button)
 
     def load_selection_screen(self):
+        self.current_step = 0
         self.main_box.clear()
         self.coffee_selection_screen = CoffeeSelectionScreen(self.instructions)
         self.main_box.add(self.coffee_selection_screen)
+        self.controls.clear()
+        start_button = toga.Button(
+            "Start brewing!", 
+            style=Pack(flex=1), 
+            on_press=self.start_button_handler)
+        self.controls.add(start_button)
 
-    def forward_handler(self, widget=None):
-        print("Forward pressed.")
-
-    def backward_handler(self, widget=None):
-        if self.current_step == 1:
-            self.back_to_start()
-        else:
-            print("Backward pressed.")
-
-    def back_to_start(self):
-        self.current_step = 0
-        self.load_selection_screen()
-        self.load_start_button()
-
-    def start_button_handler(self, widget=None):
-        """Handles the start button click, parses the ratio and passes it on to the ratio selection screen.
-
-        Args:
-            widget (toga.Widget, optional): The button that sent the event. Defaults to None.
-        """
-
-        self.current_step = 1
+    def load_ratio_screen(self):
+        self.current_step = RATIO_SELECTION
         selected = self.coffee_selection_screen.selection.value
         instruction = None
         for i in self.instructions:
@@ -83,3 +65,26 @@ class MainContainer(toga.Box):
         self.main_box.add(ratio_selection_screen)
 
         self.load_control_arrows()
+
+    def load_coffee_preparation_screen(self):
+        self.current_step = COFFEE_PREPARATION
+        self.main_box.clear()
+        coffee_preparation_screen = CoffeePreparationScreen()
+        self.main_box.add(coffee_preparation_screen)
+
+    # Event Handlers
+
+    def forward_handler(self, widget=None):
+        if self.current_step == RATIO_SELECTION:
+            self.load_coffee_preparation_screen()
+
+    def backward_handler(self, widget=None):
+        if self.current_step == RATIO_SELECTION:
+            self.load_selection_screen()
+        elif self.current_step == COFFEE_PREPARATION:
+            self.load_ratio_screen()
+        else:
+            print("Backward pressed.")
+
+    def start_button_handler(self, widget=None):
+        self.load_ratio_screen()

@@ -3,7 +3,7 @@ from .util import constants
 class Recipe():
 
     def __init__(self):
-        self.current_step = None
+        self.current_step = 0
 
     def load_recipe(self, instructions):
         self.name = instructions.get("name")
@@ -18,7 +18,14 @@ class Recipe():
         self.steps = instructions.get("steps")
 
     def next_step(self):
-        self.current_step = next(self.steps, None)
+        self.current_step += 1
+
+    def previous_step(self):
+        self.current_step -= 1
+
+    def get_current_step(self):
+        if self.current_step <= len(self.steps):
+            return self.steps[self.current_step]
 
 
 

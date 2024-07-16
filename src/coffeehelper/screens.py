@@ -3,7 +3,29 @@ from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 from toga.validators import Number
 
-from ..recipe import recipe
+from .recipe import recipe
+
+class CoffeeSelectionScreen(toga.Box):
+    def __init__(self, instructions):
+        super().__init__(style=Pack(direction=COLUMN, alignment="center", flex=1))
+        self.instructions = instructions
+        self.setup()
+
+    def setup(self):
+        label = toga.Label("Which method would you like to use?")
+        self.selection = toga.Selection(items=self.instructions, accessor="name")
+        self.add(label, self.selection)
+
+    def get_items(self):
+        output = []
+        if self.instructions:
+            for instruction in self.instructions:
+                # double checking that a name exists to avoid key error
+                name = instruction.get("name")
+                if name:
+                    output.append(name)
+        return output
+    
 
 class RatioSelectionScreen(toga.Box):
     def __init__(self):
@@ -69,3 +91,25 @@ class RatioSelectionScreen(toga.Box):
             except ValueError:
                 widget.value = "???"
                 self.changing = False
+
+
+class CoffeePreparationScreen(toga.Box):
+    def __init__(self):
+        super().__init__()
+        self.setup()
+
+    def setup(self):
+        label = toga.Label(f"If you own a grinder, grind {recipe.coffee} grams of coffee.\n"\
+                           "If you don't, weigh your preground coffee.\n"\
+                           f"Grind setting: {recipe.grind}")
+        
+        self.add(label)
+
+
+class StepDisplayScreen(toga.Box):
+    def __init__(self):
+        super().__init__()
+        self.setup()
+
+    def setup(self):
+        pass
