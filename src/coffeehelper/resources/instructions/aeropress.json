@@ -1,0 +1,37 @@
+{
+    "name": "Aeropress",
+    "grind": "medium to fine",
+    "ratio": [200, 11],
+    "steps": [
+        {
+            "text": "Put the paper filter into your Aeropress and close it.",
+            "image": "ae_filter.jpg"
+        },
+        {
+            "text": "Add {coffee} grams of coffee to your aeropress",
+            "image": "ae_add_coffee.jpg"
+        },
+        {
+            "text": "Add {water} ml of water to your aeropress. Using a scale is recommended.",
+            "image": "ae_add_water.jpg"
+        },
+        {
+            "text": "Insert plunger slightly and wait for 2 minutes.",
+            "image": "ae_steep.jpg",
+            "timer": 120
+        },
+        {
+            "text": "Swirl the coffee gently.",
+            "image": "ae_swirl.jpg"
+        },
+        {
+            "text": "Let the grounds settle for 30 more seconds.",
+            "image": "ae_steep.jpg",
+            "timer": 30
+        },
+        {
+            "text": "Gently push the plunger all the way to the bottom.",
+            "image": "ae_plunge.jpg"
+        }
+    ]
+}

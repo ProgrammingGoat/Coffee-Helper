@@ -7,6 +7,7 @@ from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
 from .main_container import MainContainer
+from .util.json_reader import JsonReader
 
 
 class CoffeeHelper(toga.App):
@@ -17,9 +18,9 @@ class CoffeeHelper(toga.App):
         We then create a main window (with a name matching the app), and
         show the main window.
         """
-        main_box = toga.Box()
+        main_box = toga.Box(style=Pack(direction=ROW, alignment="center", flex=1))
 
-        main_container = MainContainer()
+        main_container = MainContainer(app=self)
         main_box.add(main_container)
 
         self.main_window = toga.MainWindow(title=self.formal_name, size=(300, 480))
