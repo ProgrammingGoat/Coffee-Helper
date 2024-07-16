@@ -6,6 +6,8 @@ import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
+from .main_container import MainContainer
+
 
 class CoffeeHelper(toga.App):
     def startup(self):
@@ -17,7 +19,10 @@ class CoffeeHelper(toga.App):
         """
         main_box = toga.Box()
 
-        self.main_window = toga.MainWindow(title=self.formal_name)
+        main_container = MainContainer()
+        main_box.add(main_container)
+
+        self.main_window = toga.MainWindow(title=self.formal_name, size=(300, 480))
         self.main_window.content = main_box
         self.main_window.show()
 
