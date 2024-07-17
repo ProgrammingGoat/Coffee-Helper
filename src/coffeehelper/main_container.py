@@ -77,7 +77,7 @@ class MainContainer(toga.Box):
     def load_instruction_display_screen(self):
         self.current_step = INSTRUCTIONS
         self.main_box.clear()
-        self.instruction_display_screen = InstructionDisplayScreen()
+        self.instruction_display_screen = InstructionDisplayScreen(self.app)
         self.main_box.add(self.instruction_display_screen)
 
     def load_finish_screen(self):

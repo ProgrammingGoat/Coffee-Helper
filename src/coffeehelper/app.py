@@ -23,7 +23,7 @@ class CoffeeHelper(toga.App):
         main_container = MainContainer(app=self)
         main_box.add(main_container)
 
-        self.main_window = toga.MainWindow(title=self.formal_name, size=(300, 480))
+        self.main_window = toga.MainWindow(title=self.formal_name, size=(300, 480), resizable=False)
         self.main_window.content = main_box
         self.main_window.show()
 

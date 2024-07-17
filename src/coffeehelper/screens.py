@@ -4,6 +4,7 @@ from toga.style.pack import COLUMN, ROW
 from toga.validators import Number
 
 from .recipe import recipe
+from .timer import Timer
 
 class CoffeeSelectionScreen(toga.Box):
     def __init__(self, instructions):
@@ -107,8 +108,9 @@ class CoffeePreparationScreen(toga.Box):
 
 
 class InstructionDisplayScreen(toga.Box):
-    def __init__(self):
-        super().__init__(style=Pack(direction=COLUMN))
+    def __init__(self, app): # app is needed for access to the event loop
+        super().__init__(style=Pack(direction=COLUMN, flex=1))
+        self.app = app
         self.step: dict = recipe.get_current_step()
         self.setup()
 
@@ -129,12 +131,23 @@ class InstructionDisplayScreen(toga.Box):
         timer = self.step.get("timer")
 
         if image:
-            pass # insert image
+            self.load_image(image)
         if text:
-            label = toga.Label(text)
-            self.text_box.add(label)
+            self.load_text(text)
         if timer:
-            pass # insert and start timer
+            self.load_timer(timer)
+
+    def load_text(self, text):
+        label = toga.Label(text)
+        self.text_box.add(label)
+
+    def load_image(self, image):
+        pass
+
+    def load_timer(self, time):
+        self.timer = Timer(self.app, time)
+        self.timer_box.add(self.timer)
+
 
     def next_step(self):
         recipe.next_step()

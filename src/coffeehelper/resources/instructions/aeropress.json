@@ -7,6 +7,10 @@
     },
     "steps": [
         {
+            "text": "Dummy timer step",
+            "timer": 10
+        },
+        {
             "text": "Put the paper filter into your Aeropress and close it.",
             "image": "ae_filter.jpg"
         },
@@ -15,7 +19,7 @@
             "image": "ae_add_coffee.jpg"
         },
         {
-            "text": "Add {water} ml of water to your aeropress. Using a scale is recommended.",
+            "text": "Add {water} ml of water to your aeropress.\nUsing a scale is recommended.",
             "image": "ae_add_water.jpg"
         },
         {

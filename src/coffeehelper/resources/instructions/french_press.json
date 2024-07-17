@@ -24,12 +24,12 @@
             "image": "fp_stir.jpg"
         },
         {
-            "text": "Place lid on the French Press and with the plunger pulled all the way up. Let it steep for 3 more minutes.",
+            "text": "Place lid on the French Press and with the plunger\npulled all the way up. Let it steep for 3 more minutes.",
             "image": "fp_steep_lid.jpg",
             "timer": 180
         },
         {
-            "text": "Gently push the plunger all the way down and serve immediately.",
+            "text": "Gently push the plunger all the way down\nand serve immediately.",
             "image": "fp_plunge.jpg"
         }
     ]
