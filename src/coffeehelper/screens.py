@@ -121,7 +121,7 @@ class CoffeePreparationScreen(toga.Box):
             except OSError as e:
                 print("Image loading failed. Error:", e)
 
-            label = toga.Label(f"Weigh and {recipe.coffee} grams of coffee.\n" \
+            label = toga.Label(f"Weigh and grind {recipe.coffee} grams of coffee.\n" \
                     f"Grind setting: {recipe.grind}")
             self.label_box.add(label)
 
@@ -133,7 +133,7 @@ class CoffeePreparationScreen(toga.Box):
             except OSError as e:
                 print("Image loading failed. Error:", e)
 
-            label = toga.Label(f"Weigh {recipe.coffee} grames of preground coffee.\n\n" \
+            label = toga.Label(f"Weigh {recipe.coffee} grams of preground coffee.\n\n" \
                                f"Preferred grind level: {recipe.grind}")
             self.label_box.add(label)
 
