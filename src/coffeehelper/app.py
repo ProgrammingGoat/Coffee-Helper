@@ -7,7 +7,7 @@ from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
 from .main_container import MainContainer
-from .util.json_reader import JsonReader
+from .util.settings import settings
 
 
 class CoffeeHelper(toga.App):
@@ -20,6 +20,7 @@ class CoffeeHelper(toga.App):
         """
         main_box = toga.Box(style=Pack(direction=ROW, alignment="center", flex=1))
 
+        settings.load_config(self)
         main_container = MainContainer(app=self)
         main_box.add(main_container)
 

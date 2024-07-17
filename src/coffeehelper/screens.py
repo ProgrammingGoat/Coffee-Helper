@@ -7,6 +7,7 @@ from toga.validators import Number
 
 from .recipe import recipe
 from .timer import Timer
+from .util.settings import settings
 
 class CoffeeSelectionScreen(toga.Box):
     """Class representing the screen in which the users selects the coffee they want to prepare.
@@ -99,20 +100,72 @@ class CoffeePreparationScreen(toga.Box):
 
     def __init__(self):
         super().__init__(style=Pack(flex=1, direction=COLUMN, padding=(5,0)))
+        self.has_grinder = settings.get_coffee_grinder()
         self.setup()
 
     def setup(self):
-        try:
-            image = toga.Image("resources/images/grinder.jpg")
-            image_view = toga.ImageView(image, style=Pack(flex=1, padding=(5, 0)))
-        except (FileNotFoundError):
-            image_view = toga.Box(style=Pack(flex=1, padding=(5, 0))) # empty placeholder
-        label = toga.Label(f"If you own a grinder, grind {recipe.coffee} grams of coffee.\n"\
-                           "If you don't, weigh your preground coffee.\n"\
-                           f"Grind setting: {recipe.grind}", style=Pack(padding=(5, 0)))
+        self.image_box = toga.Box(style=Pack(direction=COLUMN, flex=1, padding=20))
+        self.label_box = toga.Box(style=Pack(direction=COLUMN, padding=(5, 0)))
+        self.add(self.image_box, self.label_box)
         
-        self.add(image_view)
-        self.add(label)
+        self.load_content()
+
+    def load_content(self):
+        if self.has_grinder is None:
+            self.setup_grinder()
+        elif self.has_grinder:
+            try:
+                image = toga.Image("resources/images/grinder.png")
+                image_view = toga.ImageView(image, style=Pack(flex=1))
+                self.image_box.add(image_view)
+            except OSError as e:
+                print("Image loading failed. Error:", e)
+
+            label = toga.Label(f"Weigh and {recipe.coffee} grams of coffee.\n" \
+                    f"Grind setting: {recipe.grind}")
+            self.label_box.add(label)
+
+        else:
+            try:
+                image = toga.Image("resources/images/scale.png")
+                image_view = toga.ImageView(image, style=Pack(flex=1))
+                self.image_box.add(image_view)
+            except OSError as e:
+                print("Image loading failed. Error:", e)
+
+            label = toga.Label(f"Weigh {recipe.coffee} grames of preground coffee.\n\n" \
+                               f"Preferred grind level: {recipe.grind}")
+            self.label_box.add(label)
+
+
+    def setup_grinder(self):
+        try:
+            image = toga.Image("resources/images/grinder.png")
+            image_view = toga.ImageView(image, style=Pack(flex=1))
+        except FileNotFoundError:
+            image_view = None
+        label = toga.Label("Do you have a coffee grinder?")
+        answers = toga.Box(style=Pack(direction=ROW, padding=5))
+        yes_button = toga.Button("Yes", style=Pack(flex=1), on_press=self.yes_button_handler)
+        no_button = toga.Button("No", style=Pack(flex=1), on_press=self.no_button_handler)
+        self.image_box.add(image_view)
+        answers.add(yes_button, no_button)
+        self.image_box.add(image_view)
+        self.label_box.add(label, answers)
+
+    def yes_button_handler(self, widget=None):
+        settings.set_coffee_grinder(True)
+        self.has_grinder = True
+        self.image_box.clear()
+        self.label_box.clear()
+        self.load_content()
+
+    def no_button_handler(self, widget=None):
+        settings.set_coffee_grinder(False)
+        self.has_grinder = False
+        self.image_box.clear()
+        self.label_box.clear()
+        self.load_content()
 
 
 class InstructionDisplayScreen(toga.Box):
