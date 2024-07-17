@@ -115,9 +115,9 @@ class InstructionDisplayScreen(toga.Box):
         self.setup()
 
     def setup(self):
-        self.image_box = toga.Box(style=Pack(flex=1))
-        self.text_box = toga.Box()
-        self.timer_box = toga.Box()
+        self.image_box = toga.Box(style=Pack(flex=1, padding=(5, 0)))
+        self.text_box = toga.Box(style=Pack(padding=(5, 0)))
+        self.timer_box = toga.Box(style=Pack(padding=(5, 0)))
         self.add(self.image_box, self.text_box, self.timer_box)
         self.load_step()
 
@@ -138,11 +138,15 @@ class InstructionDisplayScreen(toga.Box):
             self.load_timer(timer)
 
     def load_text(self, text):
-        label = toga.Label(text)
+        label = toga.Label(text.format(coffee=recipe.coffee, water=recipe.water))
         self.text_box.add(label)
 
     def load_image(self, image):
-        pass
+        try:
+            image_obj = toga.Image("resources/images/" + image)
+            image_view = toga.ImageView(image_obj, style=Pack(flex=1))
+        except (FileNotFoundError, ValueError):
+            pass
 
     def load_timer(self, time):
         self.timer = Timer(self.app, time)
@@ -156,3 +160,8 @@ class InstructionDisplayScreen(toga.Box):
             self.load_step()
         else:
             return "finished"
+        
+    def previous_step(self):
+        recipe.previous_step()
+        self.step = recipe.get_current_step()
+        self.load_step()

@@ -105,6 +105,8 @@ class MainContainer(toga.Box):
             self.load_ratio_screen()
         elif self.current_step == INSTRUCTIONS and recipe.current_step <= 0:
             self.load_coffee_preparation_screen()
+        elif self.current_step == INSTRUCTIONS:
+            self.instruction_display_screen.previous_step()
         else:
             print("Backward pressed.")
 

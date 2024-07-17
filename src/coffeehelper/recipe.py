@@ -24,7 +24,7 @@ class Recipe():
         self.current_step -= 1
 
     def get_current_step(self):
-        if self.current_step <= len(self.steps):
+        if self.current_step < len(self.steps):
             return self.steps[self.current_step]
         else:
             return None

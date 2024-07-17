@@ -1,7 +1,6 @@
 import asyncio
 import time
 import toga
-import winsound
 
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
@@ -79,7 +78,6 @@ class Timer(toga.Box):
     def finish(self, widget=None):
         self.progress_bar.value = self.duration
         self.app.beep()
-
 
     async def tick_timer(self, app):
         while self.is_running:
