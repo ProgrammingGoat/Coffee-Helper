@@ -98,16 +98,20 @@ class RatioSelectionScreen(toga.Box):
 
 class CoffeePreparationScreen(toga.Box):
     def __init__(self):
-        super().__init__()
+        super().__init__(style=Pack(flex=1, direction=COLUMN, padding=(5,0)))
         self.setup()
 
     def setup(self):
-        image = toga.Image("resources/images/grinder.jpg")
-        image_view = toga.ImageView(image, style=Pack(flex=1))
+        try:
+            image = toga.Image("resources/images/grinder.jpg")
+            image_view = toga.ImageView(image, style=Pack(flex=1, padding=(5, 0)))
+        except (FileNotFoundError):
+            image_view = toga.Box(style=Pack(flex=1, padding=(5, 0))) # empty placeholder
         label = toga.Label(f"If you own a grinder, grind {recipe.coffee} grams of coffee.\n"\
                            "If you don't, weigh your preground coffee.\n"\
-                           f"Grind setting: {recipe.grind}")
+                           f"Grind setting: {recipe.grind}", style=Pack(padding=(5, 0)))
         
+        self.add(image_view)
         self.add(label)
 
 
@@ -151,7 +155,7 @@ class InstructionDisplayScreen(toga.Box):
             image_view = toga.ImageView(image_obj, style=Pack(flex=1))
             self.image_box.add(image_view)
         except (FileNotFoundError, ValueError):
-            pass
+            print("Error: Image", image, "not found.")
 
     def load_timer(self, time):
         self.timer = Timer(self.app, time)

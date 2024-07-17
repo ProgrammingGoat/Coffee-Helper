@@ -12,8 +12,8 @@
             "image": "fp_add_coffee.jpg"
         },
         {
-            "text": "Pour {water} grams of boiling water over the coffee grounds.",
-            "image": "fp_pour_water.jpg"
+            "text": "Add {water} grams of boiling water.",
+            "image": "fp_add_water.jpg"
         },
         {
             "text": "Let the coffee steep for 4 minutes.",
