@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
@@ -100,6 +102,8 @@ class CoffeePreparationScreen(toga.Box):
         self.setup()
 
     def setup(self):
+        image = toga.Image("resources/images/grinder.jpg")
+        image_view = toga.ImageView(image, style=Pack(flex=1))
         label = toga.Label(f"If you own a grinder, grind {recipe.coffee} grams of coffee.\n"\
                            "If you don't, weigh your preground coffee.\n"\
                            f"Grind setting: {recipe.grind}")
@@ -143,8 +147,9 @@ class InstructionDisplayScreen(toga.Box):
 
     def load_image(self, image):
         try:
-            image_obj = toga.Image("resources/images/" + image)
+            image_obj = toga.Image(Path("resources/images") / recipe.image_folder / image)
             image_view = toga.ImageView(image_obj, style=Pack(flex=1))
+            self.image_box.add(image_view)
         except (FileNotFoundError, ValueError):
             pass
 

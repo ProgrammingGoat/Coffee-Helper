@@ -35,12 +35,13 @@ class Timer(toga.Box):
         self.label.text = f"Time: {time_remaining // 60:02d}:{time_remaining % 60:02d}"
     
     def start(self, widget=None):
-        self.start_button.text = "Stop"
+        self.start_button.text = "Cancel"
         self.start_button.on_press = self.abort
 
         self.pause_button.text = "Pause"
         self.pause_button.on_press = self.pause
         self.pause_button.enabled = True
+        self.pause_button.focus()
 
         self.progress_bar.start()
         self.start_time = time.time()

@@ -7,6 +7,7 @@ class Recipe():
 
     def load_recipe(self, instructions):
         self.name = instructions.get("name")
+        self.image_folder = instructions.get("image_folder")
         self.grind = instructions.get("grind")
         ratio = instructions.get("ratio")
         self.water = constants.DEFAULT_WATER

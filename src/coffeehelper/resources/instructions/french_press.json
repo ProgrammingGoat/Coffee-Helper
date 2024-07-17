@@ -1,5 +1,6 @@
 {
     "name": "French Press",
+    "image_folder": "french_press",
     "grind": "medium to coarse",
     "ratio": {
         "water": 500,
@@ -11,26 +12,21 @@
             "image": "fp_add_coffee.jpg"
         },
         {
-            "text": "Pour {water} grams of water over the coffee grounds.",
+            "text": "Pour {water} grams of boiling water over the coffee grounds.",
             "image": "fp_pour_water.jpg"
         },
         {
-            "text": "Let the coffee sit for a minute until a crust forms.",
-            "image": "fp_steep_no_lid.jpg",
-            "timer": 60
+            "text": "Let the coffee steep for 4 minutes.",
+            "image": "fp_steep.jpg",
+            "timer": 240
         },
         {
-            "text": "Gently stir.",
-            "image": "fp_stir.jpg"
-        },
-        {
-            "text": "Place lid on the French Press and with the plunger\npulled all the way up. Let it steep for 3 more minutes.",
-            "image": "fp_steep_lid.jpg",
-            "timer": 180
-        },
-        {
-            "text": "Gently push the plunger all the way down\nand serve immediately.",
+            "text": "Add the lid and very slowly push the plunger down.",
             "image": "fp_plunge.jpg"
+        },
+        {
+            "text": "Very slowly pour the coffee into cups.",
+            "image": "fp_pour.jpg"
         }
     ]
 }
