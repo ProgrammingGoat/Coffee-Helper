@@ -2,10 +2,14 @@ import json, os
 import toga
 
 class JsonReader():
+    """Helper class to import the instruction JSON files."""
+
     def __init__(self, app: toga.App):
         self.app = app
 
     def read_steps(self) -> list[dict]:
+        """Reads out the instruction files and returns them as a list of dictionaries."""
+
         output = []
 
         # read all instruction files
@@ -21,6 +25,9 @@ class JsonReader():
         return [instructions for instructions in output if self.verify_valid_instructions(instructions)]
 
     def verify_valid_instructions(self, instruction: dict) -> bool:
+        """Does some soft verification of the validity of the instruction files.
+        This is not bulletproof; always ensure the instruction files are valid."""
+
         if not "name" in instruction:
             return False
         

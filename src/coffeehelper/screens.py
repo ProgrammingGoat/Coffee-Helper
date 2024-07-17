@@ -9,6 +9,10 @@ from .recipe import recipe
 from .timer import Timer
 
 class CoffeeSelectionScreen(toga.Box):
+    """Class representing the screen in which the users selects the coffee they want to prepare.
+    
+    Takes a dictionary representation of instructions as an argument."""
+
     def __init__(self, instructions):
         super().__init__(style=Pack(direction=COLUMN, alignment="center", flex=1))
         self.instructions = instructions
@@ -18,26 +22,20 @@ class CoffeeSelectionScreen(toga.Box):
         label = toga.Label("Which method would you like to use?")
         self.selection = toga.Selection(items=self.instructions, accessor="name")
         self.add(label, self.selection)
-
-    def get_items(self):
-        output = []
-        if self.instructions:
-            for instruction in self.instructions:
-                # double checking that a name exists to avoid key error
-                name = instruction.get("name")
-                if name:
-                    output.append(name)
-        return output
     
 
 class RatioSelectionScreen(toga.Box):
+    """Class representing the screen in which the user chooses how much coffee to prepare."""
+
     def __init__(self):
         super().__init__(style=Pack(direction=COLUMN))
         self.changing = False   # helper variable to avoid looping field updates
 
         self.setup()
 
-    def setup(self):        
+    def setup(self):
+        """Generates the user interface."""
+
         row1 = toga.Box(style=Pack(direction=ROW, padding=5))
         water_label = toga.Label("Water", style=Pack(width=100))
         self.water_input = toga.TextInput(
@@ -97,6 +95,8 @@ class RatioSelectionScreen(toga.Box):
 
 
 class CoffeePreparationScreen(toga.Box):
+    """Class representing the screen in which the user is told to weigh and grind their coffee."""
+
     def __init__(self):
         super().__init__(style=Pack(flex=1, direction=COLUMN, padding=(5,0)))
         self.setup()
@@ -116,6 +116,8 @@ class CoffeePreparationScreen(toga.Box):
 
 
 class InstructionDisplayScreen(toga.Box):
+    """Represents the screen in which the user is lead through the step-by-step instructions to make coffee."""
+
     def __init__(self, app): # app is needed for access to the event loop
         super().__init__(style=Pack(direction=COLUMN, flex=1))
         self.app = app
@@ -123,6 +125,8 @@ class InstructionDisplayScreen(toga.Box):
         self.setup()
 
     def setup(self):
+        """Creates the containers for the user interface."""
+
         self.image_box = toga.Box(style=Pack(flex=1, padding=(5, 0)))
         self.text_box = toga.Box(style=Pack(padding=(5, 0)))
         self.timer_box = toga.Box(style=Pack(padding=(5, 0)))
@@ -130,6 +134,9 @@ class InstructionDisplayScreen(toga.Box):
         self.load_step()
 
     def load_step(self):
+        """Loads the current step into the user interface,
+        adding an image and a timer as needed."""
+
         self.image_box.clear()
         self.text_box.clear()
         self.timer_box.clear()

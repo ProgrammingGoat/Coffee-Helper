@@ -11,6 +11,9 @@ from .util.constants import COFFEE_SELECTION, RATIO_SELECTION,\
 from .util.json_reader import JsonReader
 
 class MainContainer(toga.Box):
+    """The main container which will display most of the user interface.
+    Handles managing the various screens and switching between them."""
+
     def __init__(self, app):
         super().__init__(style=Pack(direction=COLUMN, padding=10, flex=1))
         self.app = app
@@ -21,9 +24,9 @@ class MainContainer(toga.Box):
         self.instructions = json_reader.read_steps()
 
         self.setup()
-        self.load_selection_screen()
 
     def setup(self):
+        """Generates the overall layout and loads the initial screen."""
         self.main_box = toga.Box(style=Pack(flex=1))
         self.controls = toga.Box(style=Pack(direction=ROW, height=40, flex=1))
 
@@ -33,14 +36,18 @@ class MainContainer(toga.Box):
     # Element Loading Methods
 
     def load_control_arrows(self):
+        """Loads in the buttons that allow moving forward and backward through the instructions."""
+
         self.controls.clear()
         backward_button = toga.Button("<-", on_press=self.backward_handler)
-        spacer = toga.Box(style=Pack(flex=1))
+        spacer = toga.Box(style=Pack(flex=1)) # ensures that the buttons "stick" to the left and right by filling any remaining space.
         forward_button = toga.Button("Continue ->", on_press=self.forward_handler)
         self.controls.add(backward_button, spacer, forward_button)
 
     def load_selection_screen(self):
-        self.current_step = 0
+        """Loads the screen in which the user selects their coffee of choice from the options available."""
+
+        self.current_step = COFFEE_SELECTION
         self.main_box.clear()
         self.coffee_selection_screen = CoffeeSelectionScreen(self.instructions)
         self.main_box.add(self.coffee_selection_screen)
@@ -52,6 +59,8 @@ class MainContainer(toga.Box):
         self.controls.add(start_button)
 
     def load_ratio_screen(self):
+        """Loads the screen in which the user chooses how much water/coffee to brew."""
+
         self.current_step = RATIO_SELECTION
         selected = self.coffee_selection_screen.selection.value
         instruction = None
@@ -69,23 +78,31 @@ class MainContainer(toga.Box):
         self.load_control_arrows()
 
     def load_coffee_preparation_screen(self):
+        """Loads the screen which tells the user to weigh and grind their coffee."""
+
         self.current_step = COFFEE_PREPARATION
         self.main_box.clear()
         coffee_preparation_screen = CoffeePreparationScreen()
         self.main_box.add(coffee_preparation_screen)
 
     def load_instruction_display_screen(self):
+        """Loads the screen that will guide the user through step-by-step instructions."""
+
         self.current_step = INSTRUCTIONS
         self.main_box.clear()
         self.instruction_display_screen = InstructionDisplayScreen(self.app)
         self.main_box.add(self.instruction_display_screen)
 
     def load_finish_screen(self):
+        """Loads the screen that congratulates the user to their cup of coffee."""
         pass
 
     # Event Handlers
 
     def forward_handler(self, widget=None):
+        """Handles presses of the forward button.
+        Determines the current step and performs the appropriate action."""
+
         if self.current_step == RATIO_SELECTION:
             self.load_coffee_preparation_screen()
         elif self.current_step == COFFEE_PREPARATION:
@@ -99,6 +116,9 @@ class MainContainer(toga.Box):
             print("Forward pressed.")
 
     def backward_handler(self, widget=None):
+        """Handles presses of the backward button.
+        Determins the current step and performs the appropriate action."""
+
         if self.current_step == RATIO_SELECTION:
             self.load_selection_screen()
         elif self.current_step == COFFEE_PREPARATION:
@@ -111,4 +131,6 @@ class MainContainer(toga.Box):
             print("Backward pressed.")
 
     def start_button_handler(self, widget=None):
+        """Handles presses of the start button."""
+        
         self.load_ratio_screen()
