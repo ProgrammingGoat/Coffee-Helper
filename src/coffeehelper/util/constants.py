@@ -1,3 +1,5 @@
+"""Storing various constant values for consistency and easy modification."""
+
 # default values
 
 DEFAULT_WATER = 500
