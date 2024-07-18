@@ -41,7 +41,7 @@ class RatioSelectionScreen(toga.Box):
     """Class representing the screen in which the user chooses how much coffee to prepare."""
 
     def __init__(self):
-        super().__init__(style=Pack(direction=COLUMN))
+        super().__init__(style=Pack(direction=COLUMN, flex=1))
         self.changing = False  # helper variable to avoid looping field updates
         self.ratio = calcs.calculate_ratio(recipe.coffee, recipe.water)
 
@@ -58,6 +58,7 @@ class RatioSelectionScreen(toga.Box):
             validators=[Number()],
         )
         ml_label = toga.Label("ml")
+        row1.add(water_label, self.water_input, ml_label)
 
         row2 = toga.Box(style=Pack(direction=ROW, padding=5))
         coffee_label = toga.Label("Coffee", style=Pack(width=100))
@@ -67,12 +68,15 @@ class RatioSelectionScreen(toga.Box):
             validators=[Number()],
         )
         gram_label = toga.Label("g")
-
-        row1.add(water_label, self.water_input, ml_label)
         row2.add(coffee_label, self.coffee_input, gram_label)
-        self.add(row1, row2)
 
-    # On change handlers
+        row3 = toga.Box(style=Pack(padding=5, direction=ROW))
+        reset_button = toga.Button("Reset", style=Pack(flex=1), on_press=self.reset_button_handler)
+        row3.add(reset_button)
+
+        self.add(row1, row2, row3)
+
+    # Event handlers
 
     def on_coffee_change_handler(self, widget):
         if not self.changing:
@@ -97,6 +101,10 @@ class RatioSelectionScreen(toga.Box):
             except ValueError:
                 widget.value = "???"
                 self.changing = False
+        
+    def reset_button_handler(self, widget):
+        self.coffee_input.value = recipe.coffee
+        self.water_input.value = recipe.water
 
 
 class CoffeePreparationScreen(ImageTextBox):
