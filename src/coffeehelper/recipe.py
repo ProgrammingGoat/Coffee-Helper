@@ -18,7 +18,6 @@ class Recipe:
         if ratio:
             self.water = ratio.get("water", constants.DEFAULT_WATER)
             self.coffee = ratio.get("coffee", constants.DEFAULT_COFFEE)
-        self.ratio = self.coffee / self.water
         self.steps = instructions.get("steps")
         self.current_step = 0
 

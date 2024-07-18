@@ -1,0 +1,13 @@
+"""Helper functions for various calculations."""
+
+
+def calculate_ratio(coffee: int, water: int) -> float:
+    return coffee / water
+
+
+def calculate_coffee_from_water(water: int, ratio: float) -> float:
+    return water * ratio
+
+
+def calculate_water_from_coffee(coffee: int, ratio: float) -> float:
+    return coffee / ratio

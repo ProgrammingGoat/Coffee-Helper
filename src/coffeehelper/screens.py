@@ -7,6 +7,7 @@ from toga.validators import Number
 
 from .recipe import recipe
 from .timer import Timer
+from .util import calcs
 from .util.settings import settings
 
 
@@ -42,6 +43,7 @@ class RatioSelectionScreen(toga.Box):
     def __init__(self):
         super().__init__(style=Pack(direction=COLUMN))
         self.changing = False  # helper variable to avoid looping field updates
+        self.ratio = calcs.calculate_ratio(recipe.coffee, recipe.water)
 
         self.setup()
 
@@ -70,20 +72,14 @@ class RatioSelectionScreen(toga.Box):
         row2.add(coffee_label, self.coffee_input, gram_label)
         self.add(row1, row2)
 
-    # On change handlers + Utility functions
-
-    def calculate_coffee_from_water(self, water):
-        return water * recipe.ratio
-
-    def calculate_water_from_coffee(self, coffee):
-        return coffee / recipe.ratio
+    # On change handlers
 
     def on_coffee_change_handler(self, widget):
         if not self.changing:
             try:
                 self.changing = True
-                coffee = int(widget.value)
-                water = int(self.calculate_water_from_coffee(coffee))
+                coffee = float(widget.value)
+                water = round(calcs.calculate_water_from_coffee(coffee, self.ratio))
                 self.water_input.value = water
                 self.changing = False
             except ValueError:
@@ -94,8 +90,8 @@ class RatioSelectionScreen(toga.Box):
         if not self.changing:
             try:
                 self.changing = True
-                water = int(widget.value)
-                coffee = round(self.calculate_coffee_from_water(water), 1)
+                water = float(widget.value)
+                coffee = round(calcs.calculate_coffee_from_water(water, self.ratio), 1)
                 self.coffee_input.value = coffee
                 self.changing = False
             except ValueError:
