@@ -4,7 +4,7 @@ A tool to help you prepare delicious coffee.
 
 import toga
 from toga.style import Pack
-from toga.style.pack import COLUMN, ROW
+from toga.style.pack import ROW
 
 from .main_container import MainContainer
 from .settings_window import SettingsWindow
@@ -26,14 +26,14 @@ class CoffeeHelper(toga.App):
         main_box.add(main_container)
 
         settings_window_cmd = toga.Command(
-            self.open_settings_window,
-            text = "Settings",
-            group=toga.Group.FILE
+            self.open_settings_window, text="Settings", group=toga.Group.FILE
         )
 
         self.commands.add(settings_window_cmd)
 
-        self.main_window = toga.MainWindow(title=self.formal_name, size=(300, 480), resizable=False)
+        self.main_window = toga.MainWindow(
+            title=self.formal_name, size=(300, 480), resizable=False
+        )
         self.main_window.content = main_box
         self.main_window.show()
 

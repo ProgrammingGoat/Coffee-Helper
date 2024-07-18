@@ -2,13 +2,23 @@ import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
-from .screens import CoffeePreparationScreen, CoffeeSelectionScreen, \
-                    RatioSelectionScreen, InstructionDisplayScreen, FinishScreen
 from .recipe import recipe
-
-from .util.constants import COFFEE_SELECTION, RATIO_SELECTION,\
-                            COFFEE_PREPARATION, INSTRUCTIONS, FINISHED
+from .screens import (
+    CoffeePreparationScreen,
+    CoffeeSelectionScreen,
+    FinishScreen,
+    InstructionDisplayScreen,
+    RatioSelectionScreen,
+)
+from .util.constants import (
+    COFFEE_PREPARATION,
+    COFFEE_SELECTION,
+    FINISHED,
+    INSTRUCTIONS,
+    RATIO_SELECTION,
+)
 from .util.json_reader import JsonReader
+
 
 class MainContainer(toga.Box):
     """The main container which will display most of the user interface.
@@ -40,7 +50,9 @@ class MainContainer(toga.Box):
 
         self.controls.clear()
         backward_button = toga.Button("<-", on_press=self.backward_handler)
-        spacer = toga.Box(style=Pack(flex=1)) # ensures that the buttons "stick" to the left and right by filling any remaining space.
+        spacer = toga.Box(
+            style=Pack(flex=1)
+        )  # ensures that the buttons "stick" to the left and right by filling any remaining space.
         forward_button = toga.Button("Continue ->", on_press=self.forward_handler)
         self.controls.add(backward_button, spacer, forward_button)
 
@@ -53,9 +65,8 @@ class MainContainer(toga.Box):
         self.main_box.add(self.coffee_selection_screen)
         self.controls.clear()
         start_button = toga.Button(
-            "Start brewing!", 
-            style=Pack(flex=1), 
-            on_press=self.start_button_handler)
+            "Start brewing!", style=Pack(flex=1), on_press=self.start_button_handler
+        )
         self.controls.add(start_button)
 
     def load_ratio_screen(self):
@@ -100,7 +111,11 @@ class MainContainer(toga.Box):
         finish_screen = FinishScreen()
         self.main_box.add(finish_screen)
 
-        restart_button = toga.Button("Brew more coffee!", style=Pack(flex=1), on_press=self.restart_button_handler)
+        restart_button = toga.Button(
+            "Brew more coffee!",
+            style=Pack(flex=1),
+            on_press=self.restart_button_handler,
+        )
         self.controls.clear()
         self.controls.add(restart_button)
 
@@ -139,7 +154,7 @@ class MainContainer(toga.Box):
 
     def start_button_handler(self, widget=None):
         """Handles presses of the start button."""
-        
+
         self.load_ratio_screen()
 
     def restart_button_handler(self, widget=None):

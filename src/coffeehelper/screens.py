@@ -9,11 +9,12 @@ from .recipe import recipe
 from .timer import Timer
 from .util.settings import settings
 
+
 class ImageTextBox(toga.Box):
     """Base class for creating a box with an image at the top and some text at the bottom."""
 
     def __init__(self):
-        super().__init__(style=Pack(flex=1, direction=COLUMN, padding=(5,0)))
+        super().__init__(style=Pack(flex=1, direction=COLUMN, padding=(5, 0)))
         self.image_box = toga.Box(style=Pack(direction=COLUMN, flex=1, padding=5))
         self.label_box = toga.Box(style=Pack(direction=COLUMN, padding=(5, 0)))
         self.add(self.image_box, self.label_box)
@@ -21,7 +22,7 @@ class ImageTextBox(toga.Box):
 
 class CoffeeSelectionScreen(toga.Box):
     """Class representing the screen in which the users selects the coffee they want to prepare.
-    
+
     Takes a dictionary representation of instructions as an argument."""
 
     def __init__(self, instructions):
@@ -33,14 +34,14 @@ class CoffeeSelectionScreen(toga.Box):
         label = toga.Label("Which method would you like to use?")
         self.selection = toga.Selection(items=self.instructions, accessor="name")
         self.add(label, self.selection)
-    
+
 
 class RatioSelectionScreen(toga.Box):
     """Class representing the screen in which the user chooses how much coffee to prepare."""
 
     def __init__(self):
         super().__init__(style=Pack(direction=COLUMN))
-        self.changing = False   # helper variable to avoid looping field updates
+        self.changing = False  # helper variable to avoid looping field updates
 
         self.setup()
 
@@ -50,36 +51,33 @@ class RatioSelectionScreen(toga.Box):
         row1 = toga.Box(style=Pack(direction=ROW, padding=5))
         water_label = toga.Label("Water", style=Pack(width=100))
         self.water_input = toga.TextInput(
-            value=recipe.water, 
+            value=recipe.water,
             on_change=self.on_water_change_handler,
-            validators=[Number()])
+            validators=[Number()],
+        )
         ml_label = toga.Label("ml")
 
         row2 = toga.Box(style=Pack(direction=ROW, padding=5))
         coffee_label = toga.Label("Coffee", style=Pack(width=100))
         self.coffee_input = toga.TextInput(
-            value=recipe.coffee, 
+            value=recipe.coffee,
             on_change=self.on_coffee_change_handler,
-            validators=[Number()])
+            validators=[Number()],
+        )
         gram_label = toga.Label("g")
 
-        
-        row1.add(water_label, 
-                 self.water_input,
-                 ml_label)
-        row2.add(coffee_label, 
-                 self.coffee_input, 
-                 gram_label)
+        row1.add(water_label, self.water_input, ml_label)
+        row2.add(coffee_label, self.coffee_input, gram_label)
         self.add(row1, row2)
 
     # On change handlers + Utility functions
 
     def calculate_coffee_from_water(self, water):
         return water * recipe.ratio
-    
+
     def calculate_water_from_coffee(self, coffee):
         return coffee / recipe.ratio
-    
+
     def on_coffee_change_handler(self, widget):
         if not self.changing:
             try:
@@ -124,8 +122,10 @@ class CoffeePreparationScreen(ImageTextBox):
             except OSError as e:
                 print("Image loading failed. Error:", e)
 
-            label = toga.Label(f"Weigh and grind {recipe.coffee} grams of coffee.\n" \
-                    f"Grind setting: {recipe.grind}")
+            label = toga.Label(
+                f"Weigh and grind {recipe.coffee} grams of coffee.\n"
+                f"Grind setting: {recipe.grind}"
+            )
             self.label_box.add(label)
 
         else:
@@ -136,10 +136,11 @@ class CoffeePreparationScreen(ImageTextBox):
             except OSError as e:
                 print("Image loading failed. Error:", e)
 
-            label = toga.Label(f"Weigh {recipe.coffee} grams of preground coffee.\n\n" \
-                               f"Preferred grind level: {recipe.grind}")
+            label = toga.Label(
+                f"Weigh {recipe.coffee} grams of preground coffee.\n\n"
+                f"Preferred grind level: {recipe.grind}"
+            )
             self.label_box.add(label)
-
 
     def setup_grinder(self):
         try:
@@ -149,8 +150,12 @@ class CoffeePreparationScreen(ImageTextBox):
             image_view = None
         label = toga.Label("Do you have a coffee grinder?")
         answers = toga.Box(style=Pack(direction=ROW, padding=5))
-        yes_button = toga.Button("Yes", style=Pack(flex=1), on_press=self.yes_button_handler)
-        no_button = toga.Button("No", style=Pack(flex=1), on_press=self.no_button_handler)
+        yes_button = toga.Button(
+            "Yes", style=Pack(flex=1), on_press=self.yes_button_handler
+        )
+        no_button = toga.Button(
+            "No", style=Pack(flex=1), on_press=self.no_button_handler
+        )
         self.image_box.add(image_view)
         answers.add(yes_button, no_button)
         self.image_box.add(image_view)
@@ -174,7 +179,7 @@ class CoffeePreparationScreen(ImageTextBox):
 class InstructionDisplayScreen(ImageTextBox):
     """Represents the screen in which the user is lead through the step-by-step instructions to make coffee."""
 
-    def __init__(self, app): # app is needed for access to the event loop
+    def __init__(self, app):  # app is needed for access to the event loop
         super().__init__()
         self.app = app
         self.step: dict = recipe.get_current_step()
@@ -212,7 +217,9 @@ class InstructionDisplayScreen(ImageTextBox):
 
     def load_image(self, image):
         try:
-            image_obj = toga.Image(Path("resources/images") / recipe.image_folder / image)
+            image_obj = toga.Image(
+                Path("resources/images") / recipe.image_folder / image
+            )
             image_view = toga.ImageView(image_obj, style=Pack(flex=1))
             self.image_box.add(image_view)
         except (FileNotFoundError, ValueError):
@@ -222,7 +229,6 @@ class InstructionDisplayScreen(ImageTextBox):
         self.timer = Timer(self.app, time)
         self.timer_box.add(self.timer)
 
-
     def next_step(self):
         recipe.next_step()
         self.step = recipe.get_current_step()
@@ -230,11 +236,12 @@ class InstructionDisplayScreen(ImageTextBox):
             self.load_step()
         else:
             return "finished"
-        
+
     def previous_step(self):
         recipe.previous_step()
         self.step = recipe.get_current_step()
         self.load_step()
+
 
 class FinishScreen(ImageTextBox):
     """Represents the screen after the user finishes preparing their coffee."""

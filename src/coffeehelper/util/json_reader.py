@@ -1,7 +1,10 @@
-import json, os
+import json
+import os
+
 import toga
 
-class JsonReader():
+
+class JsonReader:
     """Helper class to import the instruction JSON files."""
 
     def __init__(self, app: toga.App):
@@ -20,24 +23,28 @@ class JsonReader():
         except Exception as e:
             print("Error getting files.", e, type(e))
             return None
-        
+
         # verify if instruction files are valid and only return the valid ones
-        return [instructions for instructions in output if self.verify_valid_instructions(instructions)]
+        return [
+            instructions
+            for instructions in output
+            if self.verify_valid_instructions(instructions)
+        ]
 
     def verify_valid_instructions(self, instruction: dict) -> bool:
         """Does some soft verification of the validity of the instruction files.
         This is not bulletproof; always ensure the instruction files are valid."""
 
-        if not "name" in instruction:
+        if "name" not in instruction:
             return False
-        
-        if not "steps" in instruction or type(instruction["steps"]) != list:
+
+        if "steps" not in instruction or type(instruction["steps"]) is not list:
             return False
-        
+
         for step in instruction["steps"]:
-            if not "text" in step:
+            if "text" not in step:
                 return False
-            if "timer" in step and not type(step["timer"] == int):
+            if "timer" in step and type(step["timer"]) is not int:
                 return False
-        
+
         return True

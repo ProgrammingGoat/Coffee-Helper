@@ -1,6 +1,7 @@
 from .util import constants
 
-class Recipe():
+
+class Recipe:
     """Class representing the currently selected recipe.
     Do not manually instantiate this, simply import the instance from this module."""
 
@@ -17,7 +18,7 @@ class Recipe():
         if ratio:
             self.water = ratio.get("water", constants.DEFAULT_WATER)
             self.coffee = ratio.get("coffee", constants.DEFAULT_COFFEE)
-        self.ratio = self.coffee/self.water
+        self.ratio = self.coffee / self.water
         self.steps = instructions.get("steps")
         self.current_step = 0
 

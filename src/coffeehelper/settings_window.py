@@ -1,8 +1,9 @@
 import toga
 from toga.style import Pack
-from toga.style.pack import COLUMN, ROW
+from toga.style.pack import COLUMN
 
 from .util.settings import settings
+
 
 class SettingsWindow(toga.Window):
     """A window to edit the settings."""
@@ -15,7 +16,9 @@ class SettingsWindow(toga.Window):
     def setup(self):
         """Creates the user interface."""
         has_grinder = settings.get_coffee_grinder()
-        self.grinder_checkbox = toga.Switch("Has grinder", value=bool(has_grinder)) # if None = unset, convert to False for unchecked box
+        self.grinder_checkbox = toga.Switch(
+            "Has grinder", value=bool(has_grinder)
+        )  # if None = unset, convert to False for unchecked box
         save_button = toga.Button("Save settings", on_press=self.save_settings)
         self.content.add(self.grinder_checkbox, save_button)
 
