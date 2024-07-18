@@ -4,9 +4,6 @@ class Recipe():
     """Class representing the currently selected recipe.
     Do not manually instantiate this, simply import the instance from this module."""
 
-    def __init__(self):
-        self.current_step = 0
-
     def load_recipe(self, instructions):
         """Receives a dictionary representation of a given recipe
         and uses it to initialize/update all attributes."""
@@ -22,6 +19,7 @@ class Recipe():
             self.coffee = ratio.get("coffee", constants.DEFAULT_COFFEE)
         self.ratio = self.coffee/self.water
         self.steps = instructions.get("steps")
+        self.current_step = 0
 
     def next_step(self):
         self.current_step += 1

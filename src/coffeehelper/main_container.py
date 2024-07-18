@@ -3,7 +3,7 @@ from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
 from .screens import CoffeePreparationScreen, CoffeeSelectionScreen, \
-                    RatioSelectionScreen, InstructionDisplayScreen
+                    RatioSelectionScreen, InstructionDisplayScreen, FinishScreen
 from .recipe import recipe
 
 from .util.constants import COFFEE_SELECTION, RATIO_SELECTION,\
@@ -95,7 +95,14 @@ class MainContainer(toga.Box):
 
     def load_finish_screen(self):
         """Loads the screen that congratulates the user to their cup of coffee."""
-        pass
+        self.current_step = FINISHED
+        self.main_box.clear()
+        finish_screen = FinishScreen()
+        self.main_box.add(finish_screen)
+
+        restart_button = toga.Button("Brew more coffee!", style=Pack(flex=1), on_press=self.restart_button_handler)
+        self.controls.clear()
+        self.controls.add(restart_button)
 
     # Event Handlers
 
@@ -134,3 +141,8 @@ class MainContainer(toga.Box):
         """Handles presses of the start button."""
         
         self.load_ratio_screen()
+
+    def restart_button_handler(self, widget=None):
+        """Handles presses of the restart button."""
+
+        self.load_selection_screen()

@@ -9,6 +9,16 @@ from .recipe import recipe
 from .timer import Timer
 from .util.settings import settings
 
+class ImageTextBox(toga.Box):
+    """Base class for creating a box with an image at the top and some text at the bottom."""
+
+    def __init__(self):
+        super().__init__(style=Pack(flex=1, direction=COLUMN, padding=(5,0)))
+        self.image_box = toga.Box(style=Pack(direction=COLUMN, flex=1, padding=5))
+        self.label_box = toga.Box(style=Pack(direction=COLUMN, padding=(5, 0)))
+        self.add(self.image_box, self.label_box)
+
+
 class CoffeeSelectionScreen(toga.Box):
     """Class representing the screen in which the users selects the coffee they want to prepare.
     
@@ -95,19 +105,12 @@ class RatioSelectionScreen(toga.Box):
                 self.changing = False
 
 
-class CoffeePreparationScreen(toga.Box):
+class CoffeePreparationScreen(ImageTextBox):
     """Class representing the screen in which the user is told to weigh and grind their coffee."""
 
     def __init__(self):
-        super().__init__(style=Pack(flex=1, direction=COLUMN, padding=(5,0)))
+        super().__init__()
         self.has_grinder = settings.get_coffee_grinder()
-        self.setup()
-
-    def setup(self):
-        self.image_box = toga.Box(style=Pack(direction=COLUMN, flex=1, padding=20))
-        self.label_box = toga.Box(style=Pack(direction=COLUMN, padding=(5, 0)))
-        self.add(self.image_box, self.label_box)
-        
         self.load_content()
 
     def load_content(self):
@@ -168,11 +171,11 @@ class CoffeePreparationScreen(toga.Box):
         self.load_content()
 
 
-class InstructionDisplayScreen(toga.Box):
+class InstructionDisplayScreen(ImageTextBox):
     """Represents the screen in which the user is lead through the step-by-step instructions to make coffee."""
 
     def __init__(self, app): # app is needed for access to the event loop
-        super().__init__(style=Pack(direction=COLUMN, flex=1))
+        super().__init__()
         self.app = app
         self.step: dict = recipe.get_current_step()
         self.setup()
@@ -180,10 +183,8 @@ class InstructionDisplayScreen(toga.Box):
     def setup(self):
         """Creates the containers for the user interface."""
 
-        self.image_box = toga.Box(style=Pack(flex=1, padding=(5, 0)))
-        self.text_box = toga.Box(style=Pack(padding=(5, 0)))
         self.timer_box = toga.Box(style=Pack(padding=(5, 0)))
-        self.add(self.image_box, self.text_box, self.timer_box)
+        self.add(self.timer_box)
         self.load_step()
 
     def load_step(self):
@@ -191,7 +192,7 @@ class InstructionDisplayScreen(toga.Box):
         adding an image and a timer as needed."""
 
         self.image_box.clear()
-        self.text_box.clear()
+        self.label_box.clear()
         self.timer_box.clear()
 
         image = self.step.get("image")
@@ -207,7 +208,7 @@ class InstructionDisplayScreen(toga.Box):
 
     def load_text(self, text):
         label = toga.Label(text.format(coffee=recipe.coffee, water=recipe.water))
-        self.text_box.add(label)
+        self.label_box.add(label)
 
     def load_image(self, image):
         try:
@@ -234,3 +235,20 @@ class InstructionDisplayScreen(toga.Box):
         recipe.previous_step()
         self.step = recipe.get_current_step()
         self.load_step()
+
+class FinishScreen(ImageTextBox):
+    """Represents the screen after the user finishes preparing their coffee."""
+
+    def __init__(self):
+        super().__init__()
+        self.setup()
+
+    def setup(self):
+        try:
+            image = toga.Image("resources/images/coffee_cup.png")
+            image_view = toga.ImageView(image, style=Pack(flex=1))
+            self.image_box.add(image_view)
+        except OSError as e:
+            print("Unable to load image. Error:", e)
+        label = toga.Label("Enjoy your coffee!")
+        self.label_box.add(label)
