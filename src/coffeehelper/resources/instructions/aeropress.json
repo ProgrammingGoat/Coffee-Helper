@@ -8,11 +8,6 @@
     },
     "steps": [
         {
-            "text": "Dummy timer step",
-            "timer": 10,
-            "image": "dummy_image.jpg"
-        },
-        {
             "text": "Put the paper filter into your Aeropress and close it.\nPlace it on a mug or a similar container.",
             "image": "ae_filter.jpg"
         },
