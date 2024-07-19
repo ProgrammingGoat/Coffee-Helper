@@ -18,8 +18,9 @@ class JsonReader:
         # read all instruction files
         try:
             for file in os.scandir(self.app.paths.app / "resources/instructions"):
-                with open(self.app.paths.app / "resources/instructions" / file) as f:
-                    output.append(json.load(f))
+                if file.is_file and file.path.endswith(".json"):
+                    with open(file.path) as f:
+                        output.append(json.load(f))
         except OSError as e:
             print("Error getting files.", e, type(e))
             return None
@@ -35,7 +36,7 @@ class JsonReader:
         """Does some soft verification of the validity of the instruction files.
         This is not bulletproof; always ensure the instruction files are valid."""
 
-        if "name" not in instruction:
+        if "name" not in instruction or type(instruction["name"]) is not str:
             return False
 
         if "steps" not in instruction or type(instruction["steps"]) is not list:
