@@ -107,6 +107,7 @@ class Timer(toga.Box):
 
         self.progress_bar.value = self.duration
         self.app.beep()
+        self.stop()
 
     async def tick_timer(self, app):
         """Coroutine that gets added to the app's main event loop.
@@ -121,5 +122,6 @@ class Timer(toga.Box):
                 return
 
             self.update_ui(delta)
+            print("tick")
             # asynchronous sleep to prevent blocking the UI
             await asyncio.sleep(0.5)
