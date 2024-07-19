@@ -20,7 +20,7 @@ class JsonReader:
             for file in os.scandir(self.app.paths.app / "resources/instructions"):
                 with open(self.app.paths.app / "resources/instructions" / file) as f:
                     output.append(json.load(f))
-        except Exception as e:
+        except OSError as e:
             print("Error getting files.", e, type(e))
             return None
 
