@@ -10,8 +10,8 @@ class Recipe:
         and uses it to initialize/update all attributes."""
 
         self.name = instructions.get("name")
-        self.image_folder = instructions.get("image_folder")
-        self.grind = instructions.get("grind")
+        self.image_folder = instructions.get("image_folder") or "/"
+        self.grind = instructions.get("grind") or "medium"
         ratio = instructions.get("ratio")
         self.water = constants.DEFAULT_WATER
         self.coffee = constants.DEFAULT_COFFEE
