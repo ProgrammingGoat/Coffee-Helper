@@ -2,7 +2,7 @@
 [tool.briefcase]
 project_name = "Coffee Helper"
 bundle = "com.example"
-version = "0.0.1"
+version = "1.0.0"
 url = "https://example.com/coffeehelper"
 license.file = "LICENSE"
 author = "Lukas Brackmann"
