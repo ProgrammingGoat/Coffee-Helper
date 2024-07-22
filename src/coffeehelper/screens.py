@@ -116,6 +116,7 @@ class CoffeePreparationScreen(ImageTextBox):
         self.load_content()
 
     def load_content(self):
+        """Loads the UI elements."""
         if self.has_grinder is None:
             self.setup_grinder()
         elif self.has_grinder:
@@ -147,6 +148,7 @@ class CoffeePreparationScreen(ImageTextBox):
             self.label_box.add(label)
 
     def setup_grinder(self):
+        """Loads the screen where you select whether you have a grinder or not."""
         try:
             image = toga.Image("resources/images/grinder.png")
             image_view = toga.ImageView(image, style=Pack(flex=1))
@@ -234,6 +236,7 @@ class InstructionDisplayScreen(ImageTextBox):
         self.timer_box.add(self.timer)
 
     def next_step(self):
+        """Gets the next step from the recipe and initializes loading it."""
         recipe.next_step()
         self.step = recipe.get_current_step()
         if self.step:
@@ -242,6 +245,7 @@ class InstructionDisplayScreen(ImageTextBox):
             return "finished"
 
     def previous_step(self):
+        "Gets the previous step from the recipe and initializes loading it."
         recipe.previous_step()
         self.step = recipe.get_current_step()
         self.load_step()
@@ -255,6 +259,7 @@ class FinishScreen(ImageTextBox):
         self.setup()
 
     def setup(self):
+        """Loads the UI elements."""
         try:
             image = toga.Image("resources/images/coffee_cup.png")
             image_view = toga.ImageView(image, style=Pack(flex=1))
