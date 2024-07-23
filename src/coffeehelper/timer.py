@@ -122,6 +122,5 @@ class Timer(toga.Box):
                 return
 
             self.update_ui(delta)
-            print("tick")
             # asynchronous sleep to prevent blocking the UI
             await asyncio.sleep(0.5)

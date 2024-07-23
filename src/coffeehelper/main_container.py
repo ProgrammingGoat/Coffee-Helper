@@ -91,17 +91,24 @@ class MainContainer(toga.Box):
     def load_coffee_preparation_screen(self):
         """Loads the screen which tells the user to weigh and grind their coffee."""
 
-        if not self.ratio_selection_screen.water_input.is_valid or not self.ratio_selection_screen.coffee_input.is_valid:
-            self.window.error_dialog("Error!", "Invalid input. Please only enter numbers.")
+        if (
+            not self.ratio_selection_screen.water_input.is_valid
+            or not self.ratio_selection_screen.coffee_input.is_valid
+        ):
+            self.window.error_dialog(
+                "Error!", "Invalid input. Please only enter numbers."
+            )
             return
 
         try:
             recipe.water = float(self.ratio_selection_screen.water_input.value)
             recipe.coffee = float(self.ratio_selection_screen.coffee_input.value)
         except ValueError:
-            self.window.error_dialog("Error!", "Error parsing input. Please only enter numbers.")
+            self.window.error_dialog(
+                "Error!", "Error parsing input. Please only enter numbers."
+            )
             return
-        
+
         self.current_step = COFFEE_PREPARATION
         coffee_preparation_screen = CoffeePreparationScreen()
         self.main_box.clear()
@@ -142,7 +149,7 @@ class MainContainer(toga.Box):
             self.load_instruction_display_screen()
         elif self.current_step == INSTRUCTIONS:
             result = self.instruction_display_screen.next_step()
-            if result == "finished":
+            if result is False:
                 self.current_step == FINISHED
                 self.load_finish_screen()
         else:

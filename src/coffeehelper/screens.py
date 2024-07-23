@@ -32,7 +32,7 @@ class CoffeeSelectionScreen(toga.Box):
         self.setup()
 
     def setup(self):
-        label = toga.Label("Which method would you like to use?")
+        label = toga.Label("Which method would you like to use?", style=Pack(padding=(10, 0, 10, 0)))
         self.selection = toga.Selection(items=self.instructions, accessor="name")
         self.add(label, self.selection)
 
@@ -71,7 +71,9 @@ class RatioSelectionScreen(toga.Box):
         row2.add(coffee_label, self.coffee_input, gram_label)
 
         row3 = toga.Box(style=Pack(padding=5, direction=ROW))
-        reset_button = toga.Button("Reset", style=Pack(flex=1), on_press=self.reset_button_handler)
+        reset_button = toga.Button(
+            "Reset", style=Pack(flex=1), on_press=self.reset_button_handler
+        )
         row3.add(reset_button)
 
         self.add(row1, row2, row3)
@@ -101,7 +103,7 @@ class RatioSelectionScreen(toga.Box):
             except ValueError:
                 widget.value = "???"
                 self.changing = False
-        
+
     def reset_button_handler(self, widget):
         self.coffee_input.value = recipe.coffee
         self.water_input.value = recipe.water
@@ -188,6 +190,7 @@ class InstructionDisplayScreen(ImageTextBox):
     def __init__(self, app):  # app is needed for access to the event loop
         super().__init__()
         self.app = app
+        self.timer = None
         self.step: dict = recipe.get_current_step()
         self.setup()
 
@@ -205,6 +208,9 @@ class InstructionDisplayScreen(ImageTextBox):
         self.image_box.clear()
         self.label_box.clear()
         self.timer_box.clear()
+
+        if self.timer:
+            self.timer.stop()
 
         image = self.step.get("image")
         text = self.step.get("text")
@@ -236,13 +242,17 @@ class InstructionDisplayScreen(ImageTextBox):
         self.timer_box.add(self.timer)
 
     def next_step(self):
-        """Gets the next step from the recipe and initializes loading it."""
+        """Gets the next step from the recipe and initializes loading it.
+        Returns True if there is another step to get, otherwise False."""
         recipe.next_step()
         self.step = recipe.get_current_step()
         if self.step:
             self.load_step()
+            return True
         else:
-            return "finished"
+            if self.timer:
+                self.timer.stop()
+            return False
 
     def previous_step(self):
         "Gets the previous step from the recipe and initializes loading it."
