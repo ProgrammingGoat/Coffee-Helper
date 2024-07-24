@@ -17,7 +17,7 @@ class SettingsWindow(toga.Window):
         """Creates the user interface."""
         has_grinder = settings.get_coffee_grinder()
         self.grinder_checkbox = toga.Switch(
-            "Has grinder", value=bool(has_grinder), style=Pack(padding=(5, 0))
+            "Has coffee grinder", value=bool(has_grinder), style=Pack(padding=(5, 0))
         )  # if None = unset, convert to False for unchecked box
         save_button = toga.Button("Save settings", on_press=self.save_settings)
         self.content.add(self.grinder_checkbox, save_button)
