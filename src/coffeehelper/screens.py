@@ -57,7 +57,6 @@ class RatioSelectionScreen(toga.Box):
         self.water_input = toga.TextInput(
             value=recipe.water,
             on_change=self.on_water_change_handler,
-            on_gain_focus=self.clear_invalid_input,
             validators=[Number(allow_empty=False)],
         )
         ml_label = toga.Label("ml")
@@ -68,7 +67,6 @@ class RatioSelectionScreen(toga.Box):
         self.coffee_input = toga.TextInput(
             value=recipe.coffee,
             on_change=self.on_coffee_change_handler,
-            on_gain_focus=self.clear_invalid_input,
             validators=[Number()],
         )
         gram_label = toga.Label("g")
@@ -113,10 +111,6 @@ class RatioSelectionScreen(toga.Box):
                 widget.value = ""
                 widget.placeholder = "???"
             self.changing = False
-
-    def clear_invalid_input(self, widget: toga.TextInput):
-        if widget.is_valid is False:
-            widget.value = ""
 
     def reset_button_handler(self, widget):
         self.coffee_input.value = recipe.coffee
