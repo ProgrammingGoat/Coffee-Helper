@@ -32,7 +32,9 @@ class CoffeeSelectionScreen(toga.Box):
         self.setup()
 
     def setup(self):
-        label = toga.Label("Which method would you like to use?", style=Pack(padding=(10, 0, 10, 0)))
+        label = toga.Label(
+            "Which method would you like to use?", style=Pack(padding=(10, 0, 10, 0))
+        )
         self.selection = toga.Selection(items=self.instructions, accessor="name")
         self.add(label, self.selection)
 
@@ -55,7 +57,8 @@ class RatioSelectionScreen(toga.Box):
         self.water_input = toga.TextInput(
             value=recipe.water,
             on_change=self.on_water_change_handler,
-            validators=[Number()],
+            on_gain_focus=self.clear_invalid_input,
+            validators=[Number(allow_empty=False)],
         )
         ml_label = toga.Label("ml")
         row1.add(water_label, self.water_input, ml_label)
@@ -65,6 +68,7 @@ class RatioSelectionScreen(toga.Box):
         self.coffee_input = toga.TextInput(
             value=recipe.coffee,
             on_change=self.on_coffee_change_handler,
+            on_gain_focus=self.clear_invalid_input,
             validators=[Number()],
         )
         gram_label = toga.Label("g")
@@ -72,7 +76,9 @@ class RatioSelectionScreen(toga.Box):
 
         row3 = toga.Box(style=Pack(padding=5, direction=ROW))
         reset_button = toga.Button(
-            "Reset", style=Pack(flex=1), on_press=self.reset_button_handler
+            "Reset",
+            style=Pack(flex=1),
+            on_press=self.reset_button_handler,
         )
         row3.add(reset_button)
 
@@ -80,29 +86,37 @@ class RatioSelectionScreen(toga.Box):
 
     # Event handlers
 
-    def on_coffee_change_handler(self, widget):
+    def on_coffee_change_handler(self, widget: toga.TextInput):
         if not self.changing:
             try:
                 self.changing = True
-                coffee = float(widget.value)
+                coffee = float(
+                    widget.value or 0  # Prevent empty string from causing an Error
+                )
                 water = round(calcs.calculate_water_from_coffee(coffee, self.ratio))
                 self.water_input.value = water
-                self.changing = False
             except ValueError:
-                widget.value = "???"
-                self.changing = False
+                widget.value = ""
+                widget.placeholder = "???"
+            self.changing = False
 
-    def on_water_change_handler(self, widget):
+    def on_water_change_handler(self, widget: toga.TextInput):
         if not self.changing:
             try:
                 self.changing = True
-                water = float(widget.value)
+                water = float(
+                    widget.value or 0  # Prevent empty string from causing an Error
+                )
                 coffee = round(calcs.calculate_coffee_from_water(water, self.ratio), 1)
                 self.coffee_input.value = coffee
-                self.changing = False
             except ValueError:
-                widget.value = "???"
-                self.changing = False
+                widget.value = ""
+                widget.placeholder = "???"
+            self.changing = False
+
+    def clear_invalid_input(self, widget: toga.TextInput):
+        if widget.is_valid is False:
+            widget.value = ""
 
     def reset_button_handler(self, widget):
         self.coffee_input.value = recipe.coffee
