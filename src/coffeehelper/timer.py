@@ -47,7 +47,9 @@ class Timer(toga.Box):
         """Updates the progress bar and time display with the remaining time once each tick."""
 
         self.progress_bar.value = time
-        time_remaining = int(self.duration - time)
+        time_remaining = int(
+            self.duration - time
+        )  # truncating instead of rounding, because the second should only tick up once it's full
         self.label.text = f"Time: {time_remaining // 60:02d}:{time_remaining % 60:02d}"
 
     def start(self, widget=None):

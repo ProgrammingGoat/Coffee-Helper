@@ -75,6 +75,8 @@ class MainContainer(toga.Box):
         self.current_step = RATIO_SELECTION
         selected = self.coffee_selection_screen.selection.value
         instruction = None
+
+        # finds the instructions selected and loads them into memory
         for i in self.instructions:
             if i["name"] == selected.name:
                 instruction = i
@@ -91,6 +93,7 @@ class MainContainer(toga.Box):
     def load_coffee_preparation_screen(self):
         """Loads the screen which tells the user to weigh and grind their coffee."""
 
+        # do not allow this screen to load unless water and coffee input are valid
         if (
             not self.ratio_selection_screen.water_input.is_valid
             or not self.ratio_selection_screen.coffee_input.is_valid
@@ -100,6 +103,7 @@ class MainContainer(toga.Box):
             )
             return
 
+        # checking if input is valid (this should be caught by the validator, this is a safety measure)
         try:
             recipe.water = float(self.ratio_selection_screen.water_input.value)
             recipe.coffee = float(self.ratio_selection_screen.coffee_input.value)
@@ -124,6 +128,7 @@ class MainContainer(toga.Box):
 
     def load_finish_screen(self):
         """Loads the screen that congratulates the user to their cup of coffee."""
+
         self.current_step = FINISHED
         self.main_box.clear()
         finish_screen = FinishScreen()

@@ -44,7 +44,9 @@ class RatioSelectionScreen(toga.Box):
 
     def __init__(self):
         super().__init__(style=Pack(direction=COLUMN, flex=1))
-        self.changing = False  # helper variable to avoid looping field updates
+        self.changing = (
+            False  # helper variable to avoid infinitely looping field updates
+        )
         self.ratio = calcs.calculate_ratio(recipe.coffee, recipe.water)
 
         self.setup()
@@ -127,6 +129,7 @@ class CoffeePreparationScreen(ImageTextBox):
 
     def load_content(self):
         """Loads the UI elements."""
+
         if self.has_grinder is None:
             self.setup_grinder()
         elif self.has_grinder:
@@ -159,11 +162,14 @@ class CoffeePreparationScreen(ImageTextBox):
 
     def setup_grinder(self):
         """Loads the screen where you select whether you have a grinder or not."""
+
         try:
             image = toga.Image("resources/images/grinder.png")
             image_view = toga.ImageView(image, style=Pack(flex=1))
-        except FileNotFoundError:
+        except OSError as e:
             image_view = None
+            print("Image loading failed. Error:", e)
+
         label = toga.Label("Do you have a coffee grinder?")
         answers = toga.Box(style=Pack(direction=ROW, padding=5))
         yes_button = toga.Button(
@@ -213,10 +219,12 @@ class InstructionDisplayScreen(ImageTextBox):
         """Loads the current step into the user interface,
         adding an image and a timer as needed."""
 
+        # clear any previous steps
         self.image_box.clear()
         self.label_box.clear()
         self.timer_box.clear()
 
+        # stop previous timer, if any
         if self.timer:
             self.timer.stop()
 

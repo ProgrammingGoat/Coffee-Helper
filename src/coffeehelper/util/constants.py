@@ -4,6 +4,7 @@
 
 DEFAULT_WATER = 500
 DEFAULT_COFFEE = 30
+DEFAULT_GRIND = "medium"
 
 # Preparation steps
 

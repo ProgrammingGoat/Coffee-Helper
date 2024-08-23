@@ -13,12 +13,8 @@ from .util.settings import settings
 
 class CoffeeHelper(toga.App):
     def startup(self):
-        """Construct and show the Toga application.
+        """Construct and show the Toga application."""
 
-        Usually, you would add your application to a main content box.
-        We then create a main window (with a name matching the app), and
-        show the main window.
-        """
         main_box = toga.Box(style=Pack(direction=ROW, alignment="center", flex=1))
 
         settings.load_config(self)
@@ -38,6 +34,7 @@ class CoffeeHelper(toga.App):
         self.main_window.show()
 
     def open_settings_window(self, command=None):
+        """Creates and opens the settings window."""
         settings_window = SettingsWindow()
         settings_window.show()
 
